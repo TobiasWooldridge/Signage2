@@ -1,0 +1,12 @@
+{
+  "name": "Signage2",
+  "version": "0.0.0",
+  "dependencies": {
+    "react": "0.10.0",
+    "bootstrap": "3.1.1",
+    "react-bootstrap": "~0.10.2",
+    "underscore": "~1.6.0",
+    "moment": "~2.7.0"
+  },
+  "devDependencies": {}
+}
