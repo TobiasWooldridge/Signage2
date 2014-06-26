@@ -1,5 +1,18 @@
 /** @jsx React.DOM */
 
+
+var Time = React.createClass({
+	render: function() {
+		var datetime = moment(this.props.datetime);
+		var rfcFormatted = datetime.format("YYYY-MM-DDTHH:mm:ssZ");
+		var formatted = datetime.format(this.props.format || "YYYY-MM-DD h a");
+
+		return (
+			<time datetime={ rfcFormatted }>{ formatted }</time>
+		);
+	}
+});
+
 var BuildingMeta = React.createClass({
 	loadDataFromServer: function() {
 		$unibuddy.loadBuildingMeta(this.props.code, function(building) {
@@ -32,6 +45,10 @@ var BuildingBookings = React.createClass({
 	},
 	componentWillMount: function() {
 		this.loadDataFromServer();
+
+		if (this.props.polling) {
+			setInterval(loadDataFromServer, this.props.polling);
+		}
 	},
 	render: function() {
 	    var roomNodes = this.state.data.map(function (room) {
@@ -71,6 +88,7 @@ var RoomBooking = React.createClass({
 	}
 });
 
+
 var BuildingSign = React.createClass({
 	render: function() {
 		var code = this.props.code;
@@ -81,21 +99,7 @@ var BuildingSign = React.createClass({
 			</div>
 		);
 	}
-})
-
-var Time = React.createClass({
-	render: function() {
-		var datetime = moment(this.props.datetime);
-
-		var rfcDatetime = datetime.format("YYYY-MM-DDTHH:mm:ssZ");
-
-		var formatted = datetime.format(this.props.format || "YYYY-MM-DD h a");
-
-		return (
-			<time datetime={ rfcDatetime }>{ formatted }</time>
-		);
-	}
-})
+});
 
 React.renderComponent((
 	<BuildingSign code="IST" />
