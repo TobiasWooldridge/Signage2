@@ -32,7 +32,7 @@ gulp.task('vendors', function() {
 
 gulp.task('scripts', function() {
   return gulp.src('src/js/**/*.js*')
-    .pipe(react())
+    .pipe(react({ harmony : true }))
     .pipe(jshint('.jshintrc'))
     .pipe(jshint.reporter('default'))
     // .pipe(concat('main.js'))
@@ -57,10 +57,9 @@ gulp.task('default', ['clean'], function() {
 });
 
 gulp.task('watch', function() {
-  gulp.watch('src/styles/**/*.css', ['styles']);
-  gulp.watch('src/scripts/**/*.js*', ['scripts']);
+  gulp.watch('src/css/**/*', ['styles']);
+  gulp.watch('src/js/**/*', ['scripts']);
   gulp.watch('src/**/*.html', ['html']);
-  gulp.watch('vendors/**', ['vendors']);
 
   gulp.start('default');
 });

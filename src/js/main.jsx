@@ -1,14 +1,14 @@
 /** @jsx React.DOM */
 
-
 var Time = React.createClass({
 	render: function() {
-		var datetime = moment(this.props.datetime);
+		var datetime = moment(this.props.dateTime);
 		var rfcFormatted = datetime.format("YYYY-MM-DDTHH:mm:ssZ");
 		var formatted = datetime.format(this.props.format || "YYYY-MM-DD h a");
 
+
 		return (
-			<time datetime={ rfcFormatted }>{ formatted }</time>
+			<time dateTime={ rfcFormatted }>{ formatted }</time>
 		);
 	}
 });
@@ -27,7 +27,7 @@ var BuildingMeta = React.createClass({
 	},
 	render: function() {
 		return (
-			<div>
+			<div className="buildingMeta">
 				<h1>Welcome to { this.state.data.name }!</h1>
 			</div>
 		);
@@ -69,7 +69,7 @@ var Room = React.createClass({
 		var room = this.props.room;
 
 		return (
-	      	<div>{ room.building_code } { room.name } <br />
+	      	<div>{ room.building_code } { room.code } <br />
 	      	Current booking: <RoomBooking booking={ room.current_booking } /> <br />
 	      	Next booking: <RoomBooking booking={ room.next_booking } /></div>
 		);
@@ -84,23 +84,36 @@ var RoomBooking = React.createClass({
 			// hack for returning nothing, see https://github.com/facebook/react/issues/108
 			return <span />; 
 		}
-		return <span>{ booking.description } on <Time datetime={ booking.starts_at } /></span>;
+		return <span>{ booking.description } on <Time dateTime={ booking.starts_at } /></span>;
 	}
 });
 
-
-var BuildingSign = React.createClass({
+var BuildingSlideshow = React.createClass({
+	getInitialState: function() {
+		return { slide : 0 };
+	},
+	componentWillMount: function() {
+		setInterval(function() { this.state.slide++; }.bind(this), this.props.slideTime);
+	},
 	render: function() {
+		var numSlides = 2;
+
+		this.state.slide = this.state.slide % numSlides;
+
 		var code = this.props.code;
+		var slide = (
+			<BuildingBookings code={ code } />
+		);
+
 		return (
-			<div>
+			<div className="buildingSlideshow">
 				<BuildingMeta code={ code } />
-				<BuildingBookings code={ code } />
+				{ slide }
 			</div>
 		);
 	}
 });
 
 React.renderComponent((
-	<BuildingSign code="IST" />
+	<BuildingSlideshow slideTime="10000" code="IST" />
 	), document.getElementById("moo"));

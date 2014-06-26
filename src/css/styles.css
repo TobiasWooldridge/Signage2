@@ -5,3 +5,7 @@ body {
 time {
 	background: #eee;
 }
+
+div.buildingMeta {
+	border: #ccc 1px solid;
+}
