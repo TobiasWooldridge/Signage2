@@ -28,7 +28,8 @@ var BuildingMeta = React.createClass({
 	render: function() {
 		return (
 			<div className="buildingMeta">
-				<h1>Welcome to { this.state.data.name }!</h1>
+				<img className="logo" src="images/flinders-logo.png" />
+				<h1>Welcome to { this.state.data.name }</h1>
 			</div>
 		);
 	}

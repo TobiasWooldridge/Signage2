@@ -7,7 +7,8 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     notify = require('gulp-notify'),
     cache = require('gulp-cache'),
-    react = require('gulp-react');
+    react = require('gulp-react'),
+    imagemin = require('gulp-imagemin');
 
 gulp.task('styles', function() {
   return gulp.src('src/css/*.css')
@@ -35,11 +36,16 @@ gulp.task('scripts', function() {
     .pipe(react({ harmony : true }))
     .pipe(jshint('.jshintrc'))
     .pipe(jshint.reporter('default'))
-    // .pipe(concat('main.js'))
     .pipe(gulp.dest('dist/js'))
     .pipe(rename({suffix: '.min'}))
     .pipe(uglify())
     .pipe(gulp.dest('dist/js'));
+});
+
+gulp.task('images', function() {
+  return gulp.src('src/images/**/*')
+    .pipe(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true }))
+    .pipe(gulp.dest('dist/images'));
 });
 
 gulp.task('html', function() {
@@ -53,12 +59,13 @@ gulp.task('clean', function() {
 });
 
 gulp.task('default', ['clean'], function() {
-    return gulp.start('html', 'styles', 'scripts', 'vendors');
+    return gulp.start('html', 'styles', 'scripts', 'vendors', 'images');
 });
 
 gulp.task('watch', function() {
   gulp.watch('src/css/**/*', ['styles']);
   gulp.watch('src/js/**/*', ['scripts']);
+  gulp.watch('src/images/**/*', ['images']);
   gulp.watch('src/**/*.html', ['html']);
 
   gulp.start('default');
