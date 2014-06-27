@@ -59,8 +59,8 @@ var BuildingBookings = React.createClass({
 	    var freeRoomNodes = freeRooms.map(function (room) {
 	      return (
 	      	<tr className="room">
-		      	<td className="roomCode">{ room.building_code } { room.code }</td>
-		      	<td className="booking next"><RoomBooking booking={ room.next_booking } /></td>
+		      	<td>{ room.building_code } { room.code }</td>
+		      	<td><RoomBooking booking={ room.next_booking } /></td>
 	      	</tr>
 	      	);
 	    });
@@ -68,9 +68,9 @@ var BuildingBookings = React.createClass({
 	    var occupiedRoomNodes = occupiedRooms.map(function (room) {
 	      return (
 	      	<tr className="room">
-		      	<td className="roomCode">{ room.building_code } { room.code }</td>
-		      	<td className="booking current"><RoomBooking booking={ room.current_booking } /></td>
-		      	<td className="booking next"><RoomBooking booking={ room.next_booking } /></td>
+		      	<td>{ room.building_code } { room.code }</td>
+		      	<td><RoomBooking booking={ room.current_booking } /></td>
+		      	<td><RoomBooking booking={ room.next_booking } /></td>
 	      	</tr>
 	      	);
 	    });
@@ -84,8 +84,8 @@ var BuildingBookings = React.createClass({
 				<table className="table table-condensed">
 					<thead>
 						<tr>
-							<th>Topic Code</th>
-							<th>Next</th>
+							<th className="roomCode">Room Code</th>
+							<th className="booking next">Next</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -94,14 +94,14 @@ var BuildingBookings = React.createClass({
 				</table>
 				{ freeRoomsCaption }
 
-				
+
 				<h2>Occupied Rooms</h2>
 				<table className="table table-condensed">
 					<thead>
 						<tr>
-							<th>Topic Code</th>
-							<th>Currently</th>
-							<th>Next</th>
+							<th className="roomCode">Room Code</th>
+							<th className="booking current">Currently</th>
+							<th className="booking next">Next</th>
 						</tr>
 					</thead>
 					<tbody>
