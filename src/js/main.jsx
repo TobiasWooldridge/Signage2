@@ -28,7 +28,7 @@ var BuildingMeta = React.createClass({
 	render: function() {
 		return (
 			<div className="buildingMeta">
-				<h1>Welcome to { this.state.data.name }!</h1>
+				<h1>Welcome to { this.state.data.name } at Flinders University</h1>
 			</div>
 		);
 	}
@@ -51,30 +51,39 @@ var BuildingBookings = React.createClass({
 		}
 	},
 	render: function() {
-	    var roomNodes = this.state.data.map(function (room) {
-	      return <li><Room room={room} /></li>;
+
+		var freeRooms = this.state.data.filter(function (room) { return room.is_empty; });
+		var occupiedRooms = this.state.data.filter(function (room) { return !room.is_empty; });
+
+	    var freeRoomNodes = freeRooms.map(function (room) {
+	      return <li>
+		      	<div className="room">{ room.building_code } { room.code } <br />
+		      	Next: <RoomBooking booking={ room.next_booking } /></div>
+	      	</li>;
+	    });
+	    var occupiedRoomNodes = occupiedRooms.map(function (room) {
+	      return <li>
+		      	<div className="room">{ room.building_code } { room.code } <br />
+		      	Now: <RoomBooking booking={ room.current_booking } /> <br />
+		      	Next: <RoomBooking booking={ room.next_booking } /></div>
+	      	</li>;
 	    });
 
 		return (
-			<ul>
-				{ roomNodes }
-			</ul>
+			<div>
+				<h2>Free Rooms</h2>
+				<ul>
+					{ freeRoomNodes }
+				</ul>
+				<h2>Occupied Rooms</h2>
+				<ul>
+					{ occupiedRoomNodes }
+				</ul>
+			</div>
 		);
 	}
 });
 
-
-var Room = React.createClass({
-	render: function() {
-		var room = this.props.room;
-
-		return (
-	      	<div>{ room.building_code } { room.code } <br />
-	      	Current booking: <RoomBooking booking={ room.current_booking } /> <br />
-	      	Next booking: <RoomBooking booking={ room.next_booking } /></div>
-		);
-	}
-});
 
 var RoomBooking = React.createClass({
 	render: function() {
@@ -82,9 +91,9 @@ var RoomBooking = React.createClass({
 
 		if (!booking) {
 			// hack for returning nothing, see https://github.com/facebook/react/issues/108
-			return <span>None</span>; 
+			return <span className="booking empty">None</span>; 
 		}
-		return <span>{ booking.description } on <Time dateTime={ booking.starts_at } /></span>;
+		return <span className="booking">{ booking.description } on <Time dateTime={ booking.starts_at } /></span>;
 	}
 });
 
@@ -94,14 +103,14 @@ var BuildingSlideshow = React.createClass({
 	},
 	componentWillMount: function() {
 		setInterval(function() {
-			this.setState({ slide : this.state.slide + 1 });
+			this.state.slide++;
+			this.forceUpdate();
 		}.bind(this), this.props.slideTime);
 	},
 	render: function() {
 		var numSlides = 2;
 
 		var currentSlide = this.state.slide % numSlides;
-			console.log(this.state.slide);
 
 		var code = this.props.code;
 
@@ -118,8 +127,11 @@ var BuildingSlideshow = React.createClass({
 			);
 		}
 
+		var progressBar = <TimedProgressBar duration={this.props.slideTime} />;
+
 		return (
 			<div className="buildingSlideshow">
+				{ progressBar }
 				<BuildingMeta code={ code } />
 				{ slide }
 			</div>
@@ -159,6 +171,29 @@ var NewsFeed = React.createClass({
 	}
 });
 
+var TimedProgressBar = React.createClass({
+	getInitialState: function() {
+		return { start : new Date().getTime() };
+	},
+	componentWillMount: function() {
+		this.state.start = new Date().getTime();
+
+		var interval = setInterval(function() {
+			var ranFor = new Date().getTime() - this.state.start;
+			this.state.percent = Math.min(100, 100 * ranFor / this.props.duration);
+			this.forceUpdate();
+		}.bind(this), 20);
+	},
+	componentWillReceiveProps: function() {
+		this.state.start = new Date().getTime();
+		this.forceUpdate();
+	},
+	render: function() {
+		var ProgressBar = ReactBootstrap.ProgressBar;
+		return <ProgressBar className="slideIndicator" now={ this.state.percent } />;
+	}
+});
+
 React.renderComponent((
-	<BuildingSlideshow slideTime="1000" code="IST" />
-	), document.getElementById("moo"));
+	<BuildingSlideshow slideTime="10000" code="IST" />
+	), document.body);
