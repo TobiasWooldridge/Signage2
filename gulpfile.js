@@ -8,10 +8,13 @@ var gulp = require('gulp'),
     notify = require('gulp-notify'),
     cache = require('gulp-cache'),
     react = require('gulp-react'),
-    imagemin = require('gulp-imagemin');
+    imagemin = require('gulp-imagemin'),
+    less = require('gulp-less');
 
 gulp.task('styles', function() {
-  return gulp.src('src/css/*.css')
+  return gulp.src('src/css/*.*ss')
+    .pipe(less())
+    .pipe(rename({extname: ".css"}))
     .pipe(gulp.dest('dist/css'))
     .pipe(rename({suffix: '.min'}))
     .pipe(minifycss())
@@ -26,9 +29,6 @@ gulp.task('vendors', function() {
     .pipe(rename({suffix: '.min'}))
     .pipe(uglify())
     .pipe(gulp.dest('dist/vendor/js'));
-
-  gulp.src('vendor/bootstrap/dist/css/*')
-    .pipe(gulp.dest('dist/vendor/css'));
 });
 
 gulp.task('scripts', function() {

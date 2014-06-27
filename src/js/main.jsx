@@ -71,7 +71,6 @@ var BuildingBookings = React.createClass({
 		      	<td className="roomCode">{ room.building_code } { room.code }</td>
 		      	<td className="booking current"><RoomBooking booking={ room.current_booking } /></td>
 		      	<td className="booking next"><RoomBooking booking={ room.next_booking } /></td>
-
 	      	</tr>
 	      	);
 	    });
@@ -82,22 +81,32 @@ var BuildingBookings = React.createClass({
 		return (
 			<div>
 				<h2>Free Rooms</h2>
-				<table className="table">
-					<tr>
-						<th>Topic Code</th>
-						<th>Next</th>
-					</tr>
-					{ freeRoomNodes }
+				<table className="table table-condensed">
+					<thead>
+						<tr>
+							<th>Topic Code</th>
+							<th>Next</th>
+						</tr>
+					</thead>
+					<tbody>
+						{ freeRoomNodes }
+					</tbody>
 				</table>
 				{ freeRoomsCaption }
+
+				
 				<h2>Occupied Rooms</h2>
-				<table className="table">
-					<tr>
-						<th>Topic Code</th>
-						<th>Currently</th>
-						<th>Next</th>
-					</tr>
-					{ occupiedRoomNodes }
+				<table className="table table-condensed">
+					<thead>
+						<tr>
+							<th>Topic Code</th>
+							<th>Currently</th>
+							<th>Next</th>
+						</tr>
+					</thead>
+					<tbody>
+						{ occupiedRoomNodes }
+					</tbody>
 				</table>
 				{ occupiedRoomsCaption }
 			</div>
