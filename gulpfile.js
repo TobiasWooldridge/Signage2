@@ -22,7 +22,7 @@ gulp.task('styles', function() {
 });
 
 gulp.task('vendors', function() {
-  gulp.src(['vendor/react/react.js',
+  gulp.src(['vendor/react/react-with-addons.js',
             'vendor/react-bootstrap/react-bootstrap.js',
             'vendor/moment/moment.js'])
     .pipe(gulp.dest('dist/vendor/js'))

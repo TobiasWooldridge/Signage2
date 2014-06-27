@@ -52,22 +52,15 @@ var BuildingBookings = React.createClass({
 		}
 	},
 	render: function() {
+  		var cx = React.addons.classSet;
+	    var roomNodes = this.state.data.map(function (room) {
+    	  var classes = cx({
+	  		room: true,
+	  		empty: room.is_empty
+    	  });
 
-		var freeRooms = this.state.data.filter(function (room) { return room.is_empty; });
-		var occupiedRooms = this.state.data.filter(function (room) { return !room.is_empty; });
-
-	    var freeRoomNodes = freeRooms.map(function (room) {
 	      return (
-	      	<tr className="room">
-		      	<td>{ room.building_code } { room.code }</td>
-		      	<td><RoomBooking booking={ room.next_booking } /></td>
-	      	</tr>
-	      	);
-	    });
-
-	    var occupiedRoomNodes = occupiedRooms.map(function (room) {
-	      return (
-	      	<tr className="room">
+	      	<tr className={classes}>
 		      	<td>{ room.building_code } { room.code }</td>
 		      	<td><RoomBooking booking={ room.current_booking } /></td>
 		      	<td><RoomBooking booking={ room.next_booking } /></td>
@@ -75,28 +68,12 @@ var BuildingBookings = React.createClass({
 	      	);
 	    });
 
-	    var freeRoomsCaption = freeRooms.length ? "" : "There are no free rooms.";
-	    var occupiedRoomsCaption = occupiedRooms.length ? "" : "All rooms are free.";
+	    var Table = ReactBootstrap.Table;
 
 		return (
 			<div>
-				<h2>Free Rooms</h2>
-				<table className="table table-condensed">
-					<thead>
-						<tr>
-							<th className="roomCode">Room Code</th>
-							<th className="booking next">Next</th>
-						</tr>
-					</thead>
-					<tbody>
-						{ freeRoomNodes }
-					</tbody>
-				</table>
-				{ freeRoomsCaption }
-
-
-				<h2>Occupied Rooms</h2>
-				<table className="table table-condensed">
+				<h2>Rooms</h2>
+				<Table condensed>
 					<thead>
 						<tr>
 							<th className="roomCode">Room Code</th>
@@ -105,10 +82,9 @@ var BuildingBookings = React.createClass({
 						</tr>
 					</thead>
 					<tbody>
-						{ occupiedRoomNodes }
+						{ roomNodes }
 					</tbody>
-				</table>
-				{ occupiedRoomsCaption }
+				</Table>
 			</div>
 		);
 	}
@@ -120,7 +96,7 @@ var RoomBooking = React.createClass({
 		var booking = this.props.booking;
 
 		if (!booking) {
-			return <span className="booking empty">Empty</span>; 
+			return <span className="booking empty">Free</span>; 
 		}
 		return <span className="booking">{ booking.description } on <Time dateTime={ booking.starts_at } /></span>;
 	}

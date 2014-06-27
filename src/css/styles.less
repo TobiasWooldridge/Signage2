@@ -43,6 +43,7 @@ div.buildingMeta h1 {
 }
 
 .room {
+	&.empty { background: rgba(255, 255, 255, 0.1);}
 }
 
 .roomCode {
@@ -65,6 +66,8 @@ th.roomCode {
 	background: lighten(@flinders-gold, 20%);
 }
 
-.booking.empty {
-	opacity: 0.5;
+.booking {
+	&.empty {
+		opacity: 0.75;
+	}
 }
