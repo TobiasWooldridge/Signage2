@@ -83,11 +83,20 @@ var BuildingBookings = React.createClass({
 			<div>
 				<h2>Free Rooms</h2>
 				<table className="table">
+					<tr>
+						<th>Topic Code</th>
+						<th>Next</th>
+					</tr>
 					{ freeRoomNodes }
 				</table>
 				{ freeRoomsCaption }
 				<h2>Occupied Rooms</h2>
 				<table className="table">
+					<tr>
+						<th>Topic Code</th>
+						<th>Currently</th>
+						<th>Next</th>
+					</tr>
 					{ occupiedRoomNodes }
 				</table>
 				{ occupiedRoomsCaption }
@@ -181,16 +190,14 @@ var TimedProgressBar = React.createClass({
 	},
 	componentWillReceiveProps: function() {
 		this.state.going = false;
-		this.forceUpdate();
 
 		setTimeout(function() {
-			this.state.going = true;
 			this.forceUpdate();
 		}.bind(this), 10);
 	},
 	render: function() {
 		var ProgressBar = ReactBootstrap.ProgressBar;
-		return (
+		var widget = (
 			<div className="progress slideIndicator">
 			  <div className="progress-bar" style={{
 			  	width : (this.state.going ? "100%" : "0%"),
@@ -199,6 +206,9 @@ var TimedProgressBar = React.createClass({
 			  </div>
 			</div>
 			);
+
+		this.state.going = true;
+		return widget;
 	}
 });
 
