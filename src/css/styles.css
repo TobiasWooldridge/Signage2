@@ -17,7 +17,7 @@ div.buildingMeta {
 	left: 0px;
 	width: 100%;
 	background: #ffe063;
-	color: #333;
+	color: #111;
 }
 div.buildingMeta img.logo {
 	line-height: 150px;
@@ -61,7 +61,6 @@ td.roomCode {
 	padding: 0;
 	background: #ffe063;
 }
-
 
 .booking.empty {
 	opacity: 0.5;
