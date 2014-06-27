@@ -123,7 +123,8 @@ var BuildingSlideshow = React.createClass({
 			slide : 0,
 			slides : [
 				<BuildingBookings code={ this.props.code } />,
-				<NewsFeed polling={60000} />
+				<NewsFeed polling={60000} />,
+				<TonsleyFeed />
 			]
 		};
 	},
@@ -177,6 +178,20 @@ var NewsFeed = React.createClass({
 				<h2>News</h2>
 				{ newsNodes }
 			</div>
+		);
+	}
+});
+
+var TonsleyFeed = React.createClass({
+	render: function() {
+		return (
+			<div class="tonsleyFeed">
+				<h2>Tonsley Live Feed</h2>
+				<iframe src="http://www.flinders.edu.au/flinders/app_templates/services/scheduled/getlivetonsley.cfm?refreshrate=7"
+						style={{ height: "60em", width: "100%", border: "none" }}
+						scrolling="auto">
+	            </iframe>
+            </div>
 		);
 	}
 });
