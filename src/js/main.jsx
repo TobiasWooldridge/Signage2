@@ -173,24 +173,31 @@ var NewsFeed = React.createClass({
 
 var TimedProgressBar = React.createClass({
 	getInitialState: function() {
-		return { start : new Date().getTime() };
+		return { going : false };
 	},
 	componentWillMount: function() {
-		this.state.start = new Date().getTime();
-
-		var interval = setInterval(function() {
-			var ranFor = new Date().getTime() - this.state.start;
-			this.state.percent = Math.min(100, 100 * ranFor / this.props.duration);
-			this.forceUpdate();
-		}.bind(this), 20);
+		this.componentWillReceiveProps();
 	},
 	componentWillReceiveProps: function() {
-		this.state.start = new Date().getTime();
+		this.state.going = false;
 		this.forceUpdate();
+
+		setTimeout(function() {
+			this.state.going = true;
+			this.forceUpdate();
+		}.bind(this), 10);
 	},
 	render: function() {
 		var ProgressBar = ReactBootstrap.ProgressBar;
-		return <ProgressBar className="slideIndicator" now={ this.state.percent } />;
+		return (
+			<div className="progress slideIndicator">
+			  <div className="progress-bar" style={{
+			  	width : (this.state.going ? "100%" : "0%"),
+			  	transition: 'width ' + (this.state.going ? this.props.duration : 0) + 'ms linear'
+			  }}>
+			  </div>
+			</div>
+			);
 	}
 });
 

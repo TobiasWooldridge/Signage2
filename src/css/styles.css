@@ -37,10 +37,6 @@ td.roomCode {
 	width: 100px;
 }
 
-.progress-bar {
-	transition: width 0.1s linear;
-}
-
 .slideIndicator {
 	border-radius: 0;
 	position: absolute;
