@@ -1,9 +1,14 @@
 body {
 	padding: 20px;
+	background: #ffe063;
 }
 
 time {
-	background: #eeeeee;
+}
+
+h1, h2, h3 {
+	font-family: serif;
+	font-weight: normal;
 }
 
 div.buildingMeta {
@@ -11,18 +16,25 @@ div.buildingMeta {
 	bottom: 7px;
 	left: 0px;
 	width: 100%;
-	height: 100px;
-	background: #fce66d;
+	background: #ffe063;
 	color: #333;
 }
 div.buildingMeta h1 {
-	line-height: 100px;
+	line-height: 130px;
 	vertical-align: middle;
 	padding: 0 20px;
 	margin: 0;
+	font-size: 50px;
 }
 
-div.room {
+.room {
+}
+
+.roomCode {
+	font-weight: bold;
+}
+td.roomCode {
+	width: 100px;
 }
 
 .progress-bar {
@@ -39,5 +51,10 @@ div.room {
 	z-index: 2;
 	margin: 0;
 	padding: 0;
-	background: #fce66d;
+	background: #ffe063;
+}
+
+
+.booking.empty {
+	opacity: 0.5;
 }

@@ -28,7 +28,7 @@ var BuildingMeta = React.createClass({
 	render: function() {
 		return (
 			<div className="buildingMeta">
-				<h1>Welcome to { this.state.data.name } at Flinders University</h1>
+				<h1>Welcome to { this.state.data.name }!</h1>
 			</div>
 		);
 	}
@@ -56,29 +56,40 @@ var BuildingBookings = React.createClass({
 		var occupiedRooms = this.state.data.filter(function (room) { return !room.is_empty; });
 
 	    var freeRoomNodes = freeRooms.map(function (room) {
-	      return <li>
-		      	<div className="room">{ room.building_code } { room.code } <br />
-		      	Next: <RoomBooking booking={ room.next_booking } /></div>
-	      	</li>;
+	      return (
+	      	<tr className="room">
+		      	<td className="roomCode">{ room.building_code } { room.code }</td>
+		      	<td className="booking next"><RoomBooking booking={ room.next_booking } /></td>
+	      	</tr>
+	      	);
 	    });
+
 	    var occupiedRoomNodes = occupiedRooms.map(function (room) {
-	      return <li>
-		      	<div className="room">{ room.building_code } { room.code } <br />
-		      	Now: <RoomBooking booking={ room.current_booking } /> <br />
-		      	Next: <RoomBooking booking={ room.next_booking } /></div>
-	      	</li>;
+	      return (
+	      	<tr className="room">
+		      	<td className="roomCode">{ room.building_code } { room.code }</td>
+		      	<td className="booking current"><RoomBooking booking={ room.current_booking } /></td>
+		      	<td className="booking next"><RoomBooking booking={ room.next_booking } /></td>
+
+	      	</tr>
+	      	);
 	    });
+
+	    var freeRoomsCaption = freeRooms.length ? "" : "There are no free rooms.";
+	    var occupiedRoomsCaption = occupiedRooms.length ? "" : "All rooms are free.";
 
 		return (
 			<div>
 				<h2>Free Rooms</h2>
-				<ul>
+				<table className="table">
 					{ freeRoomNodes }
-				</ul>
+				</table>
+				{ freeRoomsCaption }
 				<h2>Occupied Rooms</h2>
-				<ul>
+				<table className="table">
 					{ occupiedRoomNodes }
-				</ul>
+				</table>
+				{ occupiedRoomsCaption }
 			</div>
 		);
 	}
@@ -90,8 +101,7 @@ var RoomBooking = React.createClass({
 		var booking = this.props.booking;
 
 		if (!booking) {
-			// hack for returning nothing, see https://github.com/facebook/react/issues/108
-			return <span className="booking empty">None</span>; 
+			return <span className="booking empty">Empty</span>; 
 		}
 		return <span className="booking">{ booking.description } on <Time dateTime={ booking.starts_at } /></span>;
 	}
@@ -99,7 +109,13 @@ var RoomBooking = React.createClass({
 
 var BuildingSlideshow = React.createClass({
 	getInitialState: function() {
-		return { slide : 0 };
+		return {
+			slide : 0,
+			slides : [
+				<BuildingBookings code={ this.props.code } />,
+				<NewsFeed polling={60000} />
+			]
+		};
 	},
 	componentWillMount: function() {
 		setInterval(function() {
@@ -108,31 +124,12 @@ var BuildingSlideshow = React.createClass({
 		}.bind(this), this.props.slideTime);
 	},
 	render: function() {
-		var numSlides = 2;
-
-		var currentSlide = this.state.slide % numSlides;
-
-		var code = this.props.code;
-
-		var slide;
-	
-		if (currentSlide === 0) {
-			slide = (
-				<BuildingBookings code={ code } />
-			);
-		}
-		else if (currentSlide == 1) {
-			slide = (
-				<NewsFeed polling={60000} />
-			);
-		}
-
-		var progressBar = <TimedProgressBar duration={this.props.slideTime} />;
+		var slide = this.state.slides[this.state.slide % this.state.slides.length];
 
 		return (
 			<div className="buildingSlideshow">
-				{ progressBar }
-				<BuildingMeta code={ code } />
+				<TimedProgressBar duration={this.props.slideTime} />
+				<BuildingMeta code={ this.props.code } />
 				{ slide }
 			</div>
 		);
@@ -156,16 +153,19 @@ var NewsFeed = React.createClass({
 		}
 	},
 	render: function() {
-	    var newsNodes = this.state.data.map(function (article) {
-	      return <li><h1>{ article.title }</h1><p>{ article.plaintext }</p></li>;
+	    var newsNodes = this.state.data.slice(0, 3).map(function (article) {
+	      return (
+	      	<div className="news article">
+		      	<h3>{ article.title }</h3>
+		      	<p>{ article.plaintext }</p>
+	      	</div>
+	      );
 	    });
 
 		return (
 			<div className="newsFeed">
-				<h1>News</h1>
-				<ul>
-					{ newsNodes }
-				</ul>
+				<h2>News</h2>
+				{ newsNodes }
 			</div>
 		);
 	}
