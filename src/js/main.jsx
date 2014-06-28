@@ -1,5 +1,4 @@
 /** @jsx React.DOM */
-
 var Time = React.createClass({
 	render: function() {
 		var datetime = moment(this.props.dateTime);

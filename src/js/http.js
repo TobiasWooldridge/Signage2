@@ -1,12 +1,11 @@
 var $http = (function() {
-
 	var http = {};
 
 	http.get = function (address, callback) {
 		var xhr = new XMLHttpRequest();
 
 		xhr.onreadystatechange = function () {
-		    if (xhr.readyState == 4) {
+			if (xhr.readyState == 4) {
 				callback(xhr.status, xhr.response);
 			}
 		};
