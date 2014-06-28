@@ -24,8 +24,15 @@ $unibuddy = (function() {
 			});
 	};
 
-	unibuddy.getTermDates = function(callback) {
-		$http.getJson(baseUrl + "uni/flinders/dates.json",
+	unibuddy.getTermWeeks = function(callback) {
+		$http.getJson(baseUrl + "uni/flinders/week.json",
+			function(status, response) {
+				callback(response.data);
+			});
+	};
+
+	unibuddy.getWeek = function(callback) {
+		$http.getJson(baseUrl + "uni/flinders/weeks/current.json",
 			function(status, response) {
 				callback(response.data);
 			});
