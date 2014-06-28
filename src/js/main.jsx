@@ -72,7 +72,7 @@ var BuildingBookings = React.createClass({
 
 		return (
 			<div>
-				<h2>Rooms</h2>
+				<h2>Room Bookings</h2>
 				<Table condensed>
 					<thead>
 						<tr>

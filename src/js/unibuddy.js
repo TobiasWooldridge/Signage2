@@ -24,5 +24,12 @@ $unibuddy = (function() {
 			});
 	};
 
+	unibuddy.getTermDates = function(callback) {
+		$http.getJson(baseUrl + "uni/flinders/dates.json",
+			function(status, response) {
+				callback(response.data);
+			});
+	};
+
 	return unibuddy;
 })();
