@@ -8,7 +8,7 @@ var Time = React.createClass({
 
         return (
             <time dateTime={ rfcFormatted }>{ formatted }</time>
-        );
+            );
     }
 });
 
@@ -27,10 +27,10 @@ var BuildingMeta = React.createClass({
     render: function() {
         return (
             <div className="buildingMeta">
-                <img className="logo" src="images/flinders-logo.png" />
-                <h1>Welcome to { this.state.data.name }</h1>
+            <img className="logo" src="images/flinders-logo.png" />
+            <h1>Welcome to { this.state.data.name }</h1>
             </div>
-        );
+            );
     }
 });
 
@@ -56,36 +56,36 @@ var BuildingBookings = React.createClass({
           var classes = cx({
             room: true,
             empty: room.is_empty
-          });
+        });
 
           return (
             <tr className={classes}>
-                <td>{ room.building_code } { room.code }</td>
-                <td><RoomBooking booking={ room.current_booking } /></td>
-                <td><RoomBooking booking={ room.next_booking } /></td>
+            <td>{ room.building_code } { room.code }</td>
+            <td><RoomBooking booking={ room.current_booking } /></td>
+            <td><RoomBooking booking={ room.next_booking } /></td>
             </tr>
             );
-        });
+      });
 
         var Table = ReactBootstrap.Table;
 
         return (
             <div>
-                <h2>Room Bookings</h2>
-                <Table condensed>
-                    <thead>
-                        <tr>
-                            <th className="roomCode">Room Code</th>
-                            <th className="booking current">Currently</th>
-                            <th className="booking next">Next</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        { roomNodes }
-                    </tbody>
-                </Table>
+            <h2>Room Bookings</h2>
+            <Table condensed>
+            <thead>
+            <tr>
+            <th className="roomCode">Room Code</th>
+            <th className="booking current">Currently</th>
+            <th className="booking next">Next</th>
+            </tr>
+            </thead>
+            <tbody>
+            { roomNodes }
+            </tbody>
+            </Table>
             </div>
-        );
+            );
     }
 });
 
@@ -106,9 +106,9 @@ var BuildingSlideshow = React.createClass({
         return {
             slide : 0,
             slides : [
-                <BuildingBookings code={ this.props.code } />,
-                <NewsFeed polling={60000} />,
-                <TonsleyFeed />
+            <BuildingBookings code={ this.props.code } />,
+            <NewsFeed polling={60000} />,
+            <TonsleyFeed />
             ]
         };
     },
@@ -123,11 +123,11 @@ var BuildingSlideshow = React.createClass({
 
         return (
             <div className="buildingSlideshow">
-                <TimedProgressBar duration={this.props.slideTime} />
-                <BuildingMeta code={ this.props.code } />
-                { slide }
+            <TimedProgressBar duration={this.props.slideTime} />
+            <BuildingMeta code={ this.props.code } />
+            { slide }
             </div>
-        );
+            );
     }
 });
 
@@ -151,18 +151,18 @@ var NewsFeed = React.createClass({
         var newsNodes = this.state.data.slice(0, 3).map(function (article) {
           return (
             <div className="news article">
-                <h3>{ article.title }</h3>
-                <p>{ article.plaintext }</p>
+            <h3>{ article.title }</h3>
+            <p>{ article.plaintext }</p>
             </div>
-          );
-        });
+            );
+      });
 
         return (
             <div className="newsFeed">
-                <h2>News</h2>
-                { newsNodes }
+            <h2>News</h2>
+            { newsNodes }
             </div>
-        );
+            );
     }
 });
 
@@ -170,13 +170,13 @@ var TonsleyFeed = React.createClass({
     render: function() {
         return (
             <div class="tonsleyFeed">
-                <h2>Tonsley Live Feed</h2>
-                <iframe src="http://www.flinders.edu.au/flinders/app_templates/services/scheduled/getlivetonsley.cfm?refreshrate=7"
-                        style={{ height: "60em", width: "100%", border: "none" }}
-                        scrolling="auto">
-                </iframe>
+            <h2>Tonsley Live Feed</h2>
+            <iframe src="http://www.flinders.edu.au/flinders/app_templates/services/scheduled/getlivetonsley.cfm?refreshrate=7"
+            style={{ height: "60em", width: "100%", border: "none" }}
+            scrolling="auto">
+            </iframe>
             </div>
-        );
+            );
     }
 });
 
@@ -198,11 +198,11 @@ var TimedProgressBar = React.createClass({
         var ProgressBar = ReactBootstrap.ProgressBar;
         var widget = (
             <div className="progress slideIndicator">
-              <div className="progress-bar" style={{
+            <div className="progress-bar" style={{
                 width : (this.state.going ? "100%" : "0%"),
                 transition: 'width ' + (this.state.going ? this.props.duration : 0) + 'ms linear'
-              }}>
-              </div>
+            }}>
+            </div>
             </div>
             );
 
