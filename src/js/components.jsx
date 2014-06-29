@@ -137,8 +137,8 @@ var NewsArticle = React.createClass({
       var article = this.props.article;
       return (
         <article className="news">
-            <h3>{ article.title }</h3>
             <img className="articleImage" src={ article.image } />
+            <h3>{ article.title }</h3>
             <p>{ article.plaintext }</p>
         </article>
         );

@@ -21,11 +21,11 @@ div.signHeader {
 	width: 100%;
 	background: lighten(@flinders-gold, 20%);
 	color: #111;
+	font-family: serif;
 
 	img.logo, h1, span.week {
-		line-height: 150px;
 		vertical-align: middle;
-		display: inline;
+		display: inline-block;
 		padding: 0 0 0 20px;
 		margin: 0;
 	}
@@ -36,13 +36,25 @@ div.signHeader {
 
 	h1 {
 		font-size: 50px;
+		margin-top: 15px;
+	}
+
+	span.week {
+		font-size: 30px;
+		float: right;
+		padding: 0 40px;
+		margin-top: 45px;
 	}
 }
 
 .newsFeed {
+	@image-width: 200px;
 	img.articleImage {
-		max-height: 175px;
+		max-width: @image-width;
 		float: right;
+	}
+	p { 
+		padding-right: @image-width + 25px;
 	}
 	article {
 		background: rgba(255, 255, 255, 0.05);
