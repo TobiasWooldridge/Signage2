@@ -118,11 +118,10 @@ var BuildingSlideshow = React.createClass({
         setInterval(function() {
             this.state.slide++;
             this.forceUpdate();
-        }.bind(this), this.props.slideTime);
+        }.bind(this), 10000);
     },
     render: function() {
         var slide = this.props.slides[this.state.slide % this.props.slides.length];
-
         return (
             <div className="buildingSlideshow">
                 <TimedProgressBar duration={ slide.duration } />
@@ -135,12 +134,14 @@ var BuildingSlideshow = React.createClass({
 
 var NewsArticle = React.createClass({
     render: function() {
-          return (
-            <div className="news article">
-                <h3>{ article.title }</h3>
-                <p>{ article.plaintext }</p>
-            </div>
-            );
+      var article = this.props.article;
+      return (
+        <article className="news">
+            <h3>{ article.title }</h3>
+            <img className="articleImage" src={ article.image } />
+            <p>{ article.plaintext }</p>
+        </article>
+        );
     }
 });     
 
@@ -159,9 +160,9 @@ var NewsFeed = React.createClass({
         }
     },
     render: function() {    
-        var newsNodes = this.state.data.slice(0, 3).map(function (article) {
-          return <NewsArticle article={article} />  ;
-      });
+        var newsNodes = this.state.data.slice(0, 2).map(function (article) {
+            return <NewsArticle article={ article } />;
+          });
 
         return (
             <div className="newsFeed">
