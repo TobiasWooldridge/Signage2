@@ -69,15 +69,12 @@ div.signHeader {
 	&.empty { background: rgba(255, 255, 255, 0.1);}
 }
 
-.roomCode {
-	font-weight: bold;
-}
 table.bookings {
 	width: auto;
 
 	th {
-		&.roomCode {
-			width: 100px;
+		&.roomLabel {
+			width: 200px;
 		}
 		&.booking {
 			width: 500px;
@@ -100,5 +97,8 @@ table.bookings {
 .booking {
 	&.empty {
 		opacity: 0.75;
+	}
+	small {
+		font-size: 0.8em;
 	}
 }

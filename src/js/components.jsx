@@ -3,8 +3,26 @@ var Time = React.createClass({
     render: function() {
         var datetime = moment(this.props.dateTime);
         var rfcFormatted = datetime.format("YYYY-MM-DDTHH:mm:ssZ");
-        var formatted = datetime.format(this.props.format || "YYYY-MM-DD h a");
+        var formatted;
 
+        var timeUntil = datetime.format('X') - moment().format('X');
+
+        if (this.props.clever) {
+            console.log(timeUntil);
+            if (Math.abs(timeUntil) < (12 * 3600)) {
+                formatted = datetime.format("h a");
+            }
+            else if (Math.abs(timeUntil) < (6 * 24 * 3600)) {
+                formatted = datetime.format("h a [on] dddd");
+            }
+            else if (timeUntil < (13 * 24 * 3600)) {
+                formatted = datetime.format("h a [on] dddd [(next week)]");
+            }
+        }
+
+        if (!formatted) {
+            formatted = datetime.format(this.props.format || "YYYY-MM-DD h a");
+        }
 
         return (
             <time dateTime={ rfcFormatted }>{ formatted }</time>
@@ -67,7 +85,7 @@ var BuildingBookings = React.createClass({
 
           return (
             <tr className={classes}>
-                <td>{ room.building_code } { room.code }</td>
+                <td>{ room.code } { room.name }</td>
                 <td><RoomBooking booking={ room.current_booking } /></td>
                 <td><RoomBooking booking={ room.next_booking } /></td>
             </tr>
@@ -78,11 +96,11 @@ var BuildingBookings = React.createClass({
 
         return (
             <div>
-                <h2>Room Bookings</h2>
+                <h2>{ this.props.code } Room Bookings</h2>
                 <Table condensed className="bookings">
                     <thead>
                         <tr>
-                            <th className="roomCode">Room Code</th>
+                            <th className="roomLabel">Room</th>
                             <th className="booking current">Currently</th>
                             <th className="booking next">Next</th>
                         </tr>
@@ -104,24 +122,49 @@ var RoomBooking = React.createClass({
         if (!booking) {
             return <span className="booking empty">Free</span>; 
         }
-        return <span className="booking">{ booking.description } on <Time dateTime={ booking.starts_at } /></span>;
+
+        var timeUntil = moment(booking.starts_at).format('X') - moment().format('X');
+
+        var started = timeUntil < 0;
+
+        if (started) {
+            return <span className="booking">{ booking.booked_for } <small>{ booking.description }</small> at <Time clever dateTime={ booking.ends_at } /></span>;
+        }
+        else {
+            return <span className="booking">{ booking.booked_for } <small>{ booking.description }</small> at <Time clever dateTime={ booking.starts_at } /></span>;
+        }
     }
 });
 
 var BuildingSlideshow = React.createClass({
     getInitialState: function() {
         return {
-            slide : 0
+            slide : undefined,
+            slideNumber: -1
         };
     },
     componentWillMount: function() {
-        setInterval(function() {
-            this.state.slide++;
-            this.forceUpdate();
-        }.bind(this), 10000);
+        var nextSlide = function() {
+            try {
+                this.state.slideNumber++;
+                
+                this.state.slide = this.props.slides[this.state.slideNumber % this.props.slides.length];
+                
+                this.forceUpdate();
+            }
+            catch (e) {
+                console.error(e);
+            }
+
+            setTimeout(nextSlide, this.state.slide.duration);
+        };
+
+        nextSlide = nextSlide.bind(this);
+
+        nextSlide();
     },
     render: function() {
-        var slide = this.props.slides[this.state.slide % this.props.slides.length];
+        var slide = this.state.slide;
         return (
             <div className="buildingSlideshow">
                 <TimedProgressBar duration={ slide.duration } />
@@ -168,20 +211,6 @@ var NewsFeed = React.createClass({
             <div className="newsFeed">
                 <h2>News</h2>
                 { newsNodes }
-            </div>
-            );
-    }
-});
-
-var TonsleyFeed = React.createClass({
-    render: function() {
-        return (
-            <div class="tonsleyFeed">
-                <h2>Tonsley Live Feed</h2>
-                <iframe src="http://www.flinders.edu.au/flinders/app_templates/services/scheduled/getlivetonsley.cfm?refreshrate=7"
-                style={{ height: "60em", width: "100%", border: "none" }}
-                scrolling="auto">
-                </iframe>
             </div>
             );
     }
