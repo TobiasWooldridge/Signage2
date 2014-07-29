@@ -7,16 +7,15 @@ var Time = React.createClass({
 
         var timeUntil = datetime.format('X') - moment().format('X');
 
+        var isToday = datetime.format('YYYY-MM-DD') == moment().format('YYYY-MM-DD');
+
         if (this.props.clever) {
             console.log(timeUntil);
-            if (Math.abs(timeUntil) < (12 * 3600)) {
-                formatted = datetime.format("h a");
+            if (isToday) {
+                formatted = datetime.format("h A");
             }
-            else if (Math.abs(timeUntil) < (6 * 24 * 3600)) {
-                formatted = datetime.format("h a [on] dddd");
-            }
-            else if (timeUntil < (13 * 24 * 3600)) {
-                formatted = datetime.format("h a [on] dddd [(next week)]");
+            else {
+                formatted = datetime.calendar();
             }
         }
 
@@ -119,20 +118,20 @@ var RoomBooking = React.createClass({
     render: function() {
         var booking = this.props.booking;
 
+
         if (!booking) {
             return <span className="booking empty">Free</span>; 
         }
 
-        var timeUntil = moment(booking.starts_at).format('X') - moment().format('X');
 
+        var timeUntil = moment(booking.starts_at).format('X') - moment().format('X');
         var started = timeUntil < 0;
 
-        if (started) {
-            return <span className="booking">{ booking.booked_for } <small>{ booking.description }</small> at <Time clever dateTime={ booking.ends_at } /></span>;
+        if (timeUntil > 3600 * 24) {
+            return <span className="booking empty">Free</span>; 
         }
-        else {
-            return <span className="booking">{ booking.booked_for } <small>{ booking.description }</small> at <Time clever dateTime={ booking.starts_at } /></span>;
-        }
+
+        return <span className="booking">{ booking.booked_for } <small>{ booking.description }</small> <Time clever dateTime={ booking.starts_at } /></span>;
     }
 });
 
